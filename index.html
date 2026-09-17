@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Revolut Italy Gateway</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --accent: #335dff;
+  --accent2: #22c55e;
+  --text: #1f2937;
+  --muted: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* CENTER CARD */
+.center-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.flag {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.subtext {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.btn {
+  background: var(--accent);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  width: 100%;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: #2448d8;
+}
+
+/* DASHBOARD */
+.dashboard {
+  display: none;
+}
+
+.balance-box {
+  background: var(--accent);
+  color: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.balance-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.balance-value {
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.withdraw-btn {
+  background: var(--accent2);
+  margin-top: 10px;
+}
+
+/* IBAN INPUT */
+.iban-box {
+  display: none;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.confirm-btn {
+  background: var(--accent);
+}
+
+/* LOADING SCREEN */
+.loading-screen {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-text {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e5e7eb;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* RECEIPT */
+.receipt {
+  display: none;
+  text-align: left;
+}
+
+.receipt-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.note {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="center-card" id="welcome">
+  <div class="flag">🇮🇹</div>
+  <div class="title">Welcome to ITALY PAYMENT GATEWAY</div>
+  <div class="subtext">Secure European Banking Access</div>
+  <button class="btn" onclick="openDashboard()">Open Dashboard</button>
+</div>
+
+<div class="center-card dashboard" id="dashboard">
+  <div class="balance-box">
+    <div class="balance-label">Available Balance</div>
+    <div class="balance-value">€4,000 EUR</div>
+  </div>
+
+  <button class="btn withdraw-btn" onclick="openIBAN()">Withdraw Funds</button>
+</div>
+
+<div class="center-card iban-box" id="ibanBox">
+  <div class="title">Enter IBAN / Bank Details</div>
+  <input class="input" id="ibanInput" placeholder="Enter IBAN Number">
+  <input class="input" id="bankInput" placeholder="Enter Bank Name">
+  <button class="btn confirm-btn" onclick="startLoading()">Confirm Withdrawal</button>
+</div>
+
+<div class="center-card loading-screen" id="loadingScreen">
+  <div class="spinner"></div>
+  <div class="loading-text">Processing Transaction…</div>
+  <div class="subtext">This may take up to 12 seconds</div>
+</div>
+
+<div class="center-card receipt" id="receipt">
+  <div class="receipt-title">Transaction Receipt</div>
+
+  <div class="receipt-row">
+    <span>Amount Sent</span>
+    <span>€4,000 EUR</span>
+  </div>
+
+  <div class="receipt-row">
+    <span>Fee</span>
+    <span>€63</span>
+  </div>
+
+  <div class="receipt-row">
+    <span>License Type</span>
+    <span>Digital Card + Standard Ownership Access</span>
+  </div>
+
+  <div class="receipt-row">
+    <span>Destination IBAN</span>
+    <span id="ibanResult"></span>
+  </div>
+
+  <div class="receipt-row">
+    <span>Bank</span>
+    <span id="bankResult"></span>
+  </div>
+
+  <div class="note">
+    Note: Your transaction has been securely processed through the Italy Payment Gateway.  
+    All digital licenses and ownership access have been verified.  
+    For reassurance, your withdrawal is protected under EU PSD2 regulations.
+  </div>
+</div>
+
+<script>
+function openDashboard() {
+  document.getElementById("welcome").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+}
+
+function openIBAN() {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("ibanBox").style.display = "block";
+}
+
+function startLoading() {
+  const iban = document.getElementById("ibanInput").value.trim();
+  const bank = document.getElementById("bankInput").value.trim();
+
+  if (!iban || !bank) {
+    alert("Please enter both IBAN and Bank Name");
+    return;
+  }
+
+  document.getElementById("ibanBox").style.display = "none";
+  document.getElementById("loadingScreen").style.display = "block";
+
+  setTimeout(() => {
+    document.getElementById("loadingScreen").style.display = "none";
+    document.getElementById("receipt").style.display = "block";
+
+    document.getElementById("ibanResult").textContent = iban;
+    document.getElementById("bankResult").textContent = bank;
+  }, 12000);
+}
+</script>
+
+</body>
+</html>

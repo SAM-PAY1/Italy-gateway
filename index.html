@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
 <meta charset="UTF-8">
 <title>ITLY</title>
@@ -7,12 +7,13 @@
 
 <style>
 :root {
-  --bg: #f5f7fa;
+  --bg: #f4f6f9;
   --card: #ffffff;
-  --accent: #335dff;
-  --accent2: #22c55e;
+  --accent: #2d4cff;
+  --accent2: #1ecb5b;
   --text: #1f2937;
   --muted: #6b7280;
+  --radius: 20px;
 }
 
 * {
@@ -30,54 +31,64 @@ body {
   padding: 20px;
 }
 
-/* CENTER CARD */
-.center-card {
+/* CARD BASE */
+.card {
   width: 100%;
-  max-width: 420px;
+  max-width: 430px;
   background: var(--card);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  text-align: center;
+  border-radius: var(--radius);
+  padding: 26px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
   animation: fadeIn 0.4s ease-out;
+  text-align: center;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* TITLES */
 .title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .flag {
-  font-size: 40px;
-  margin-bottom: 10px;
+  font-size: 42px;
+  margin-bottom: 12px;
 }
 
 .subtext {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
+/* BUTTONS */
 .btn {
   background: var(--accent);
   color: white;
-  padding: 12px 18px;
-  border-radius: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
   border: none;
   width: 100%;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .btn:hover {
-  background: #2448d8;
+  background: #1f38d8;
+}
+
+.btn-green {
+  background: var(--accent2);
+}
+
+.btn-green:hover {
+  background: #17a94c;
 }
 
 /* DASHBOARD */
@@ -88,65 +99,49 @@ body {
 .balance-box {
   background: var(--accent);
   color: white;
-  padding: 20px;
-  border-radius: 16px;
-  margin-bottom: 20px;
+  padding: 22px;
+  border-radius: 18px;
+  margin-bottom: 22px;
   text-align: left;
 }
 
 .balance-label {
-  font-size: 14px;
+  font-size: 15px;
   opacity: 0.9;
 }
 
 .balance-value {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
   margin-top: 6px;
-}
-
-.withdraw-btn {
-  background: var(--accent2);
-  margin-top: 10px;
 }
 
 /* IBAN INPUT */
 .iban-box {
   display: none;
-  margin-top: 20px;
   text-align: left;
 }
 
 .input {
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 14px;
+  border-radius: 12px;
   border: 1px solid #d1d5db;
-  margin-bottom: 12px;
-  font-size: 14px;
+  margin-bottom: 14px;
+  font-size: 15px;
 }
 
-.confirm-btn {
-  background: var(--accent);
-}
-
-/* LOADING SCREEN */
+/* LOADING */
 .loading-screen {
   display: none;
   text-align: center;
   padding: 40px 20px;
 }
 
-.loading-text {
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 20px;
-}
-
 .spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid #e5e7eb;
+  width: 70px;
+  height: 70px;
+  border: 7px solid #e5e7eb;
   border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -157,6 +152,12 @@ body {
   to { transform: rotate(360deg); }
 }
 
+.loading-text {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
 /* RECEIPT */
 .receipt {
   display: none;
@@ -164,90 +165,95 @@ body {
 }
 
 .receipt-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .receipt-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
 }
 
 .note {
-  margin-top: 20px;
-  font-size: 13px;
+  margin-top: 22px;
+  font-size: 14px;
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 </style>
 </head>
 
 <body>
 
-<div class="center-card" id="welcome">
+<!-- WELCOME SCREEN -->
+<div class="card" id="welcome">
   <div class="flag">🇮🇹</div>
-  <div class="title">Welcome to ITALY PAYMENT GATEWAY</div>
-  <div class="subtext">Secure European Banking Access</div>
-  <button class="btn" onclick="openDashboard()">Open Dashboard</button>
+  <div class="title">Benvenuto nel Portale Pagamenti Italia</div>
+  <div class="subtext">Accesso bancario europeo sicuro e conforme</div>
+  <button class="btn" onclick="openDashboard()">Apri Dashboard</button>
 </div>
 
-<div class="center-card dashboard" id="dashboard">
+<!-- DASHBOARD -->
+<div class="card dashboard" id="dashboard">
   <div class="balance-box">
-    <div class="balance-label">Available Balance</div>
-    <div class="balance-value">€4,000 EUR</div>
+    <div class="balance-label">Saldo Disponibile</div>
+    <div class="balance-value">€4.000 EUR</div>
   </div>
 
-  <button class="btn withdraw-btn" onclick="openIBAN()">Withdraw Funds</button>
+  <button class="btn-green btn" onclick="openIBAN()">Preleva Fondi</button>
 </div>
 
-<div class="center-card iban-box" id="ibanBox">
-  <div class="title">Enter IBAN / Bank Details</div>
-  <input class="input" id="ibanInput" placeholder="Enter IBAN Number">
-  <input class="input" id="bankInput" placeholder="Enter Bank Name">
-  <button class="btn confirm-btn" onclick="startLoading()">Confirm Withdrawal</button>
+<!-- IBAN INPUT -->
+<div class="card iban-box" id="ibanBox">
+  <div class="title">Inserisci IBAN / Dati Bancari</div>
+  <input class="input" id="ibanInput" placeholder="Inserisci il tuo IBAN">
+  <input class="input" id="bankInput" placeholder="Nome della banca">
+  <button class="btn" onclick="startLoading()">Conferma Prelievo</button>
 </div>
 
-<div class="center-card loading-screen" id="loadingScreen">
+<!-- LOADING -->
+<div class="card loading-screen" id="loadingScreen">
   <div class="spinner"></div>
-  <div class="loading-text">Processing Transaction…</div>
-  <div class="subtext">This may take up to 12 seconds</div>
+  <div class="loading-text">Elaborazione in corso…</div>
+  <div class="subtext">Attendere circa 12 secondi</div>
 </div>
 
-<div class="center-card receipt" id="receipt">
-  <div class="receipt-title">Transaction Receipt</div>
+<!-- RECEIPT -->
+<div class="card receipt" id="receipt">
+  <div class="receipt-title">Ricevuta di Transazione</div>
 
   <div class="receipt-row">
-    <span>Amount Sent</span>
-    <span>€4,000 EUR</span>
+    <span>Importo Inviato</span>
+    <span>€4.000 EUR</span>
   </div>
 
   <div class="receipt-row">
-    <span>Fee</span>
+    <span>Commissione</span>
     <span>€63</span>
   </div>
 
   <div class="receipt-row">
-    <span>License Type</span>
-    <span>Digital Card + Standard Ownership Access</span>
+    <span>Licenza</span>
+    <span>Digital Card + Accesso Standard</span>
   </div>
 
   <div class="receipt-row">
-    <span>Destination IBAN</span>
+    <span>IBAN Destinatario</span>
     <span id="ibanResult"></span>
   </div>
 
   <div class="receipt-row">
-    <span>Bank</span>
+    <span>Banca</span>
     <span id="bankResult"></span>
   </div>
 
   <div class="note">
-    Note: Your transaction has been securely processed through the Italy Payment Gateway.  
-    All digital licenses and ownership access have been verified.  
-    For reassurance, your withdrawal is protected under EU PSD2 regulations.
+    Nota: La tua transazione è stata processata tramite il Portale Pagamenti Italia.  
+    Tutte le licenze digitali e i diritti di accesso sono stati verificati.  
+    Per maggiore tranquillità, il tuo prelievo è protetto dalle normative europee PSD2.
   </div>
 </div>
 
@@ -267,7 +273,7 @@ function startLoading() {
   const bank = document.getElementById("bankInput").value.trim();
 
   if (!iban || !bank) {
-    alert("Please enter both IBAN and Bank Name");
+    alert("Inserisci IBAN e nome della banca.");
     return;
   }
 
